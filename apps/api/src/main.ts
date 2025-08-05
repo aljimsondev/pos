@@ -7,6 +7,8 @@ import {
   SwaggerModule,
 } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { AppModule } from './app.module';
@@ -58,6 +60,14 @@ async function bootstrap() {
     prefix: VERSION_PREFIX,
     defaultVersion: VERSION_NEUTRAL,
   });
+
+  app.use(cookieParser());
+
+  app.use(compression({ filter: shouldCompress }));
+
+  function shouldCompress(req: Request, res: Response): boolean {
+    return req.headers['accept'].includes('application/json');
+  }
 
   const markdownDescription = readFileSync(
     join('__dirname', '../docs', 'getting-started.md'),
