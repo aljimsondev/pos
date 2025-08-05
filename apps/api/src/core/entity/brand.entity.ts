@@ -6,10 +6,10 @@ export class Brand {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar' })
   brand_name: string;
 
   // brand can many product
-  @OneToMany(() => Product, (product) => product.brand)
+  @OneToMany(() => Product, (product) => product)
   product: Product;
 }

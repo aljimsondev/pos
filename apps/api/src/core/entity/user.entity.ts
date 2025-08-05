@@ -25,7 +25,7 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(() => Sale, (sale) => sale.staff)
+  @OneToMany(() => Sale, (sale) => sale)
   sales: Sale[];
 
   @CreateDateColumn()

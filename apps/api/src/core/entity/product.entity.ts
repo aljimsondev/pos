@@ -6,10 +6,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  VersionColumn,
 } from 'typeorm';
 
 @Entity({ name: 'products' })
@@ -17,24 +19,45 @@ export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ length: 255 })
+  @Index({ fulltext: true }) // For full-text search
   name: string;
 
-  @OneToMany(() => Photo, (photo) => photo.product)
-  photos: Photo[];
+  @Column({ type: 'varchar', length: 1000, nullable: true })
+  short_description: string;
 
-  // product can only have one brand
-  @ManyToOne(() => Brand, (brand) => brand.product)
-  brand: Brand;
-
-  @ManyToOne(() => Category, (category) => category.product)
-  category: Category;
-
-  @Column()
+  @Column({ type: 'text', nullable: true })
   description: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 50, unique: true })
+  @Index()
+  sku: string; // Main product SKU
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  @Index()
   barcode: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  slug: string; // For SEO-friendly URLs
+
+  @Column({ type: 'boolean', default: true })
+  is_active: boolean; // Soft delete
+
+  @Column({ type: 'boolean', default: false })
+  is_featured: boolean;
+
+  @Column({ type: 'jsonb', default: {} })
+  metadata: {
+    specifications?: Record<string, any>;
+    features?: string[];
+    dimensions?: {
+      length?: number;
+      width?: number;
+      height?: number;
+      unit?: 'cm' | 'in';
+    };
+    warranty?: string;
+  };
 
   @CreateDateColumn()
   created_at: Date;
@@ -42,9 +65,35 @@ export class Product {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @Column('jsonb', { default: {} })
-  metadata: Record<string, any>;
+  @VersionColumn()
+  version: number; // For optimistic locking
 
-  @OneToMany(() => Variation, (variation) => variation)
+  // Relations
+  @OneToMany(() => Photo, (photo) => photo.product, {
+    cascade: true, // Auto-save photos when product is saved
+    eager: true, // Load photos automatically (for some use cases)
+  })
+  photos: Photo[];
+
+  @ManyToOne(() => Brand, (brand) => brand.product, {
+    onDelete: 'SET NULL', // Don't delete product if brand is deleted
+  })
+  @Index()
+  brand: Brand;
+
+  @ManyToOne(() => Category, (category) => category.product, {
+    onDelete: 'SET NULL',
+  })
+  @Index()
+  category: Category;
+
+  @OneToMany(() => Variation, (variation) => variation.product, {
+    cascade: true, // Auto-save variations
+  })
   variations: Variation[];
+
+  // Virtual property (not stored in DB)
+  get has_stock(): boolean {
+    return this.variations?.some((v) => v.quantity > 0) ?? false;
+  }
 }
