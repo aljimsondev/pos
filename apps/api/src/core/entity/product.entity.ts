@@ -75,13 +75,13 @@ export class Product {
   })
   photos: Photo[];
 
-  @ManyToOne(() => Brand, (brand) => brand.product, {
+  @ManyToOne(() => Brand, (brand) => brand.products, {
     onDelete: 'SET NULL', // Don't delete product if brand is deleted
   })
   @Index()
   brand: Brand;
 
-  @ManyToOne(() => Category, (category) => category.product, {
+  @ManyToOne(() => Category, (category) => category.products, {
     onDelete: 'SET NULL',
   })
   @Index()
