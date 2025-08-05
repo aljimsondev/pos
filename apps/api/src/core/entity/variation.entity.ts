@@ -1,4 +1,5 @@
 import { LineItem } from 'src/core/entity/line-items.entity';
+import { Photo } from 'src/core/entity/photo.entity';
 import { Product } from 'src/core/entity/product.entity';
 import {
   Column,
@@ -73,4 +74,7 @@ export class Variation {
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.variation)
   line_items: LineItem[];
+
+  @OneToMany(() => Photo, (photo) => photo)
+  photos: Photo[];
 }
