@@ -64,12 +64,13 @@ export class Variation {
   @UpdateDateColumn()
   updated_at: Date;
 
+  // Corrected relationships:
   @ManyToOne(() => Product, (product) => product.variations, {
-    onDelete: 'CASCADE', // Delete variations when product is deleted
+    onDelete: 'CASCADE',
   })
-  @OneToMany(() => LineItem, (item) => item)
-  line_items: LineItem[];
-
-  @Index() // Improve join performance
+  @Index() // Now this is properly placed on the relationship
   product: Product;
+
+  @OneToMany(() => LineItem, (lineItem) => lineItem.variation)
+  line_items: LineItem[];
 }
