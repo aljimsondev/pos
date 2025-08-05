@@ -4,10 +4,12 @@ import { Photo } from 'src/core/entity/photo.entity';
 import { Variation } from 'src/core/entity/variation.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'products' })
@@ -34,10 +36,10 @@ export class Product {
   @Column()
   barcode: string;
 
-  @Column()
+  @CreateDateColumn()
   created_at: Date;
 
-  @Column()
+  @UpdateDateColumn()
   updated_at: Date;
 
   @Column('jsonb', { default: {} })

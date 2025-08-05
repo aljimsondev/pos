@@ -1,5 +1,12 @@
 import { User } from 'src/core/entity/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('sales')
 export class Sale {
@@ -24,16 +31,9 @@ export class Sale {
   @ManyToOne(() => User, (staff) => staff)
   staff: User;
 
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
+  @CreateDateColumn()
   created_at: Date;
 
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP', // For MySQL/MariaDB
-  })
+  @UpdateDateColumn()
   updated_at: Date;
 }
