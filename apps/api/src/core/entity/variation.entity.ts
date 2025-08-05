@@ -1,3 +1,4 @@
+import { LineItem } from 'src/core/entity/line-items.entity';
 import { Product } from 'src/core/entity/product.entity';
 import {
   Column,
@@ -5,6 +6,7 @@ import {
   Entity,
   Index,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -65,6 +67,9 @@ export class Variation {
   @ManyToOne(() => Product, (product) => product.variations, {
     onDelete: 'CASCADE', // Delete variations when product is deleted
   })
+  @OneToMany(() => LineItem, (item) => item)
+  line_items: LineItem[];
+
   @Index() // Improve join performance
   product: Product;
 }

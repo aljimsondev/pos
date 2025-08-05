@@ -1,9 +1,11 @@
+import { LineItem } from 'src/core/entity/line-items.entity';
 import { User } from 'src/core/entity/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -36,4 +38,7 @@ export class Sale {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @OneToMany(() => LineItem, (item) => item)
+  line_items: LineItem[];
 }

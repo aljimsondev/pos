@@ -1,9 +1,16 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/core/entity/user.entity';
+import { Brand } from 'src/core/entity/brand.entity';
+import { Category } from 'src/core/entity/category.entity';
+import { LineItem } from 'src/core/entity/line-items.entity';
+import { Photo } from 'src/core/entity/photo.entity';
+import { Product } from 'src/core/entity/product.entity';
+import { Sale } from 'src/core/entity/sale.entity';
+import { Variation } from 'src/core/entity/variation.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { User } from './core/entity/user.entity';
 import { AuthModule } from './resources/auth/auth.module';
 import { ProductModule } from './resources/product/product.module';
 import { UserModule } from './resources/user/user.module';
@@ -19,7 +26,16 @@ import { UserModule } from './resources/user/user.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User],
+      entities: [
+        User,
+        Product,
+        LineItem,
+        Photo,
+        Brand,
+        Sale,
+        Variation,
+        Category,
+      ],
       synchronize: true, // disable for production
     }),
     UserModule,
