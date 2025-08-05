@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Sale } from 'src/core/entity/sale.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'users' })
 export class User {
@@ -16,6 +17,9 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Sale, (sale) => sale.staff)
+  sales: Sale[];
 
   @Column()
   created_at: Date;
