@@ -1,6 +1,6 @@
 # Getting Started
 
-Welcome to the S-Tix API documentation.
+Welcome to the POS API documentation.
 
 ## Generating access token
 

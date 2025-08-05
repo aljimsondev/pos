@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, VERSION_NEUTRAL, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   DocumentBuilder,
@@ -12,6 +12,9 @@ import { join } from 'path';
 import { AppModule } from './app.module';
 
 const API_PREFIX = 'api';
+const VERSION_PREFIX = 'v';
+
+const PORT = process.env.PORT ?? 4001;
 
 // Helper function to filter Swagger document paths by tag
 function filterDocumentByTag(
@@ -45,6 +48,16 @@ function filterDocumentByTag(
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  //API Prefix
+  app.setGlobalPrefix(API_PREFIX);
+
+  //API Versioning
+  app.enableVersioning({
+    type: VersioningType.URI,
+    prefix: VERSION_PREFIX,
+    defaultVersion: VERSION_NEUTRAL,
+  });
 
   const markdownDescription = readFileSync(
     join('__dirname', '../docs', 'getting-started.md'),
@@ -131,10 +144,8 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, documentFactory);
   app.setGlobalPrefix(API_PREFIX);
 
-  const PORT = process.env.PORT ?? 3000;
-
   await app.listen(PORT);
-  Logger.debug('Server starts in port: ' + PORT);
-  Logger.debug(`You can view it in here: http://localhost:${PORT}/api`);
+  Logger.debug(`[server]: Running at port ${PORT}`);
+  Logger.debug(`[server]: Docs available at: http://localhost:${PORT}/docs`);
 }
 bootstrap();
