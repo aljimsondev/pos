@@ -1,6 +1,7 @@
 import { Brand } from 'src/core/entity/brand.entity';
 import { Category } from 'src/core/entity/category.entity';
 import { Photo } from 'src/core/entity/photo.entity';
+import { Variation } from 'src/core/entity/variation.entity';
 import {
   Column,
   Entity,
@@ -41,4 +42,7 @@ export class Product {
 
   @Column('jsonb', { default: {} })
   metadata: Record<string, any>;
+
+  @OneToMany(() => Variation, (variation) => variation)
+  variations: Variation[];
 }
