@@ -6,7 +6,7 @@
   "files": ["dist"],
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch",
+    "start:dev": "tsc --watch",
     "clean": "rm -rf dist"
   },
   "keywords": [],
