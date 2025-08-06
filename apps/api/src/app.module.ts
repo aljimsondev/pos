@@ -10,6 +10,7 @@ import { Photo } from 'src/core/entity/photo.entity';
 import { Product } from 'src/core/entity/product.entity';
 import { Sale } from 'src/core/entity/sale.entity';
 import { Variation } from 'src/core/entity/variation.entity';
+import { RedisModule, RedisService } from 'src/core/modules/redis';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './core/entity/user.entity';
@@ -21,6 +22,12 @@ import { UserModule } from './resources/user/user.module';
   imports: [
     // Load ConfigModule which assists with environment variables
     ConfigModule.forRoot({ envFilePath: '.env' }),
+    RedisModule.forRoot({
+      socket: {
+        host: process.env.REDIS_HOST || '127.0.0.1',
+        port: (process.env.REDIS_PORT || 6379) as number,
+      },
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -51,6 +58,7 @@ import { UserModule } from './resources/user/user.module';
       provide: APP_PIPE,
       useClass: ZodValidationPipe,
     },
+    RedisService,
   ],
 })
 export class AppModule {}
