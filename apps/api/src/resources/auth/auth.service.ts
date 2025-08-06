@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { SignInDto } from 'src/resources/auth/dto/signin.dto';
+import { SignUpDto } from 'src/resources/auth/dto/signup.dto';
 import { UserService } from 'src/resources/user/user.service';
 
 @Injectable()
@@ -10,6 +11,15 @@ export class AuthService {
       // todo handle signin
     } catch (e) {
       return new BadRequestException(e);
+    }
+  }
+
+  signUp(signUpDto: SignUpDto) {
+    try {
+      //todo
+      console.log(signUpDto.first_name);
+    } catch (e) {
+      throw new BadRequestException(e);
     }
   }
 }

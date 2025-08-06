@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { User } from 'src/core/entity/user.entity';
@@ -14,7 +18,13 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    try {
+      //todo add user
+      // 1. check if user existed
+      const user = new User();
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
   }
 
   findAll() {
