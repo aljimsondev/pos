@@ -7,8 +7,14 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**","**/.tsbuildinfo"]
     },
+    "api#build": {
+      "outputs": ["apps/api/dist/**"]
+    },
     "schema#build": {
       "outputs": ["packages/schema/dist/**"]
+    },
+    "core#build": {
+      "outputs": ["packages/core/dist/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
