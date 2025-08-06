@@ -38,14 +38,19 @@ export class UserService {
       // todo manage signin
       // 1. checks email
       // 2. validate password
-      const emailCheck = await this.userRepository.findOne({
+      const user = await this.userRepository.findOne({
         where: { email: signinDto.email },
       });
 
-      if (!emailCheck) {
+      if (!user) {
         // todo return invalid credential
       }
+      const isMatched = await user?.comparePassword(signinDto.password);
       // check password
+      if (!isMatched) {
+        // todo return invalid credential
+      }
+      // todo generate token and send it to the client
     } catch (e) {
       throw new InternalServerErrorException(e);
     }
