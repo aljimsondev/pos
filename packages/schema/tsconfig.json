@@ -7,7 +7,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@your-repo/schema": ["./src/index.ts"]
+      "@repo/schema": ["./src/index.ts"]
     }
   },
   "include": ["src"],
