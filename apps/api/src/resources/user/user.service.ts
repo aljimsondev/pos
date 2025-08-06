@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { User } from 'src/core/entity/user.entity';
 import { SignInDto } from 'src/resources/auth/dto/signin.dto';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -31,8 +31,12 @@ export class UserService {
     return this.userRepository.createQueryBuilder();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(options: FindOneOptions<User>) {
+    try {
+      return this.userRepository.findOne(options);
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
