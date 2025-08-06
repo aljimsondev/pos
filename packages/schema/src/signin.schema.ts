@@ -13,6 +13,7 @@ export const signInSchema = z.object({
     .max(64, "Password must be less than 64 characters")
     .describe("The user's password (8-64 characters)")
 })
+.required()
 .refine(data => !data.password.includes(" "), {
   message: "Password cannot contain spaces",
   path: ["password"]

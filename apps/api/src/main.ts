@@ -1,4 +1,9 @@
-import { Logger, VERSION_NEUTRAL, VersioningType } from '@nestjs/common';
+import {
+  Logger,
+  ValidationPipe,
+  VERSION_NEUTRAL,
+  VersioningType,
+} from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   DocumentBuilder,
@@ -50,6 +55,16 @@ function filterDocumentByTag(
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: false,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
 
   //API Prefix
   app.setGlobalPrefix(API_PREFIX);

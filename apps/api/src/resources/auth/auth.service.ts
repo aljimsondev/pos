@@ -9,6 +9,8 @@ export class AuthService {
   signIn(payload: SignInDto) {
     try {
       // todo handle signin
+      // validate input
+      return payload;
     } catch (e) {
       return new BadRequestException(e);
     }
@@ -17,7 +19,7 @@ export class AuthService {
   signUp(signUpDto: SignUpDto) {
     try {
       //todo
-      console.log(signUpDto.first_name);
+      return signUpDto;
     } catch (e) {
       throw new BadRequestException(e);
     }
