@@ -1,19 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { createZodDto } from 'nestjs-zod';
+import { z } from 'zod';
 
-export class SignInDto {
-  @ApiProperty({
-    name: 'email',
-    title: 'email',
-    description: 'User registered email',
-    example: 'john.doe@email.test',
-  })
-  email: string;
+export const signInSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8, 'Password must be at least 8 characters long!'),
+});
 
-  @ApiProperty({
-    name: 'password',
-    title: 'User password',
-    description: 'Registered user password',
-    example: 'password',
-  })
-  password: string;
-}
+export class SignInDto extends createZodDto(signInSchema) {}

@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { User } from 'src/core/entity/user.entity';
+import { SignInDto } from 'src/resources/auth/dto/signin.dto';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -30,5 +31,23 @@ export class UserService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async signIn(signinDto: SignInDto) {
+    try {
+      // todo manage signin
+      // 1. checks email
+      // 2. validate password
+      const emailCheck = await this.userRepository.findOne({
+        where: { email: signinDto.email },
+      });
+
+      if (!emailCheck) {
+        // todo return invalid credential
+      }
+      // check password
+    } catch (e) {
+      throw new InternalServerErrorException(e);
+    }
   }
 }
