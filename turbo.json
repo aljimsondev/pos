@@ -8,13 +8,15 @@
       "outputs": [".next/**", "!.next/cache/**","**/.tsbuildinfo"]
     },
     "api#build": {
-      "outputs": ["apps/api/dist/**"]
+      "outputs": ["apps/api/dist/**"],
+      "dependsOn": ["@repo/schema#build","@repo/core#build"]
     },
-    "schema#build": {
+    "@repo/schema#build": {
       "outputs": ["packages/schema/dist/**"]
     },
-    "core#build": {
-      "outputs": ["packages/core/dist/**"]
+    "@repo/core#build": {
+      "outputs": ["packages/core/dist/**"],
+      "dependsOn": ["@repo/schema#build"]
     },
     "lint": {
       "dependsOn": ["^lint"]
