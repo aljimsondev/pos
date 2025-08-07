@@ -26,7 +26,7 @@ export class UserService {
       });
 
       // checks if email already used
-      if (!user) {
+      if (user) {
         throw new BadRequestException(APP_ERROR.auth.email_taken);
       }
 
