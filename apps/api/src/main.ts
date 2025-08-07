@@ -11,7 +11,7 @@ import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { HttpExceptionFilter } from 'src/core/filters/http-exception.filter';
+import { AppExceptionFilter } from 'src/core/filters/app-exception.filter';
 import { ApiResponseInterceptor } from 'src/core/interceptors/api-response.interceptor';
 import { AppModule } from './app.module';
 
@@ -56,7 +56,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ApiResponseInterceptor());
 
   // Register the global filter
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new AppExceptionFilter());
 
   app.useGlobalPipes(
     new ValidationPipe({

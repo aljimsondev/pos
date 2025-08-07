@@ -1,66 +1,43 @@
 // src/interceptors/api-response.interceptor.ts
-
 import {
   CallHandler,
   ExecutionContext,
-  HttpStatus,
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { BusinessError } from '@repo/core';
-import { ApiResponse } from '@repo/schema';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
-export class ApiResponseInterceptor<T>
-  implements NestInterceptor<T, ApiResponse<T>>
-{
-  intercept(
-    context: ExecutionContext,
-    next: CallHandler,
-  ): Observable<ApiResponse<T>> {
-    const httpContext = context.switchToHttp();
-    const response = httpContext.getResponse();
-
+export class ApiResponseInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      map((data) => {
-        const status = response.statusCode || HttpStatus.OK;
-
-        return {
-          success: true,
-          status,
-          data,
-        };
-      }),
-      catchError((error) => {
-        let status = HttpStatus.INTERNAL_SERVER_ERROR;
-        let message = 'Internal server error';
-        let code: string | undefined;
-        let details: any = undefined;
-
-        if (error instanceof BusinessError) {
-          status = error.status || HttpStatus.BAD_REQUEST;
-          message = error.message;
-          code = error.code;
-          details = error.details;
-        } else if (error.response) {
-          // Handle HTTP exceptions
-          status = error.response.statusCode || status;
-          message = error.response.message || message;
+      map((data) => ({
+        success: true,
+        status: context.switchToHttp().getResponse().statusCode,
+        data,
+      })),
+      catchError((err) => {
+        // If error is already formatted, pass it through
+        if (err.response?.success === false) {
+          return throwError(() => err);
         }
 
-        response.status(status);
-
-        throw {
+        // Otherwise create a properly formatted error
+        const status = err.status || 500;
+        const response = {
           success: false,
           status,
           error: {
-            message,
-            ...(code && { code }),
-            ...(details && { details }),
+            message: err.message || 'Internal server error',
+            code: err.code || `HTTP_${status}`,
+            ...(err.details && { details: err.details }),
           },
         };
+
+        // Attach to the error object
+        err.response = response;
+        return throwError(() => err);
       }),
     );
   }
