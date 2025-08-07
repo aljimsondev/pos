@@ -1,11 +1,3 @@
-export class BusinessError extends Error {
-  constructor(
-    public readonly message: string,
-    public readonly status: number = 400,
-    public readonly code?: string,
-    public readonly details?: any,
-  ) {
-    super(message);
-    this.name = 'AppError';
-  }
-}
+export * from "./app.error";
+export * from "./business.error";
+
