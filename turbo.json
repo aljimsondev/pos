@@ -14,6 +14,9 @@
     "@repo/schema#build": {
       "outputs": ["packages/schema/dist/**"]
     },
+    "@repo/types#build": {
+      "outputs": ["packages/types/dist/**"]
+    },
     "@repo/core#build": {
       "outputs": ["packages/core/dist/**"],
       "dependsOn": ["@repo/schema#build"]
