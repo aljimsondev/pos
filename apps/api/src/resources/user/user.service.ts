@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { APP_ERROR } from '@repo/core';
+import { APP_ERROR, BusinessError } from '@repo/core';
 import { User } from 'src/core/entity/user.entity';
 import { SignInDto } from 'src/resources/auth/dto/signin.dto';
 import { SignUpDto } from 'src/resources/auth/dto/signup.dto';
@@ -27,7 +27,7 @@ export class UserService {
 
       // checks if email already used
       if (user) {
-        throw new BadRequestException(APP_ERROR.auth.email_taken);
+        throw new BusinessError(APP_ERROR.auth.email_taken);
       }
 
       // create new user
