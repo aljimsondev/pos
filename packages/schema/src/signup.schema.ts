@@ -26,12 +26,13 @@ export const signupSchema = z.object({
   first_name: z.string()
     .min(1, "First name is required!")
     .max(50, "First name must be less than 50 characters")
-    .regex(/^[A-Za-z]+$/, "First name can only contain letters"),
+    .regex(/^[A-Za-z\s'-]+$/, "First name can only contain letters, spaces, hyphens, and apostrophes"),
+
     
   last_name: z.string()
     .min(1, "Last name is required!")
     .max(50, "Last name must be less than 50 characters")
-    .regex(/^[A-Za-z]+$/, "Last name can only contain letters"),
+    .regex(/^[\p{L}\s'-]+$/u, "First name can only contain letters, spaces, hyphens, and apostrophes"),
     
   role: roleSchema.default("cashier"),
   email: emailSchema,
