@@ -30,12 +30,19 @@ export class UserService {
         throw new BadRequestException(APP_ERROR.auth.email_taken);
       }
 
-      // insert new user in the database
-      const newUser = await this.userRepository.insert({});
+      // save user
+      const newUser = new User();
+      newUser.first_name = signUpDto.first_name;
+      newUser.last_name = signUpDto.last_name;
+      newUser.password = signUpDto.password;
+      newUser.role = signUpDto.role;
+      newUser.email = signUpDto.email;
+      const result = await this.userRepository.save(newUser);
 
       return {
         success: true,
-        id: newUser.identifiers,
+        id: result.id,
+        created_at: result.created_at,
       };
     } catch (e) {
       throw new BadRequestException(e);
