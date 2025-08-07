@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { APP_ERROR, BusinessError } from '@repo/core';
+import { APP_ERROR, AuthError } from '@repo/core';
 import { ApiResponse } from '@repo/schema';
 import { SignInDto } from 'src/resources/auth/dto/signin.dto';
 import { SignUpDto } from 'src/resources/auth/dto/signup.dto';
@@ -14,12 +14,12 @@ export class AuthService {
       where: { email: credential.email },
     });
 
-    if (!user) throw new BusinessError(APP_ERROR.auth.invalid_credentials);
+    if (!user) throw new AuthError(APP_ERROR.auth.invalid_credentials);
 
     const passwordMatched = await user.comparePassword(credential.password);
 
     if (!passwordMatched)
-      throw new BusinessError(APP_ERROR.auth.invalid_credentials);
+      throw new AuthError(APP_ERROR.auth.invalid_credentials);
 
     // generate token, refresh token etc.
   }
