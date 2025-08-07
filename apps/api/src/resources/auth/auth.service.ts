@@ -12,6 +12,14 @@ export class AuthService {
   async signIn(credential: SignInDto) {
     const user = await this.userService.findOne({
       where: { email: credential.email },
+      select: {
+        password: true,
+        email: true,
+        id: true,
+        first_name: true,
+        last_name: true,
+        role: true,
+      },
     });
 
     if (!user) throw new AuthError(APP_ERROR.auth.invalid_credentials);
