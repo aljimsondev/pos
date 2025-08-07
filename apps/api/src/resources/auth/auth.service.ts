@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { APP_ERROR } from 'src/core/constants/error.constants';
 import { SignInDto } from 'src/resources/auth/dto/signin.dto';
 import { SignUpDto } from 'src/resources/auth/dto/signup.dto';
 import { UserService } from 'src/resources/user/user.service';
@@ -19,18 +18,7 @@ export class AuthService {
 
   async signUp(signUpDto: SignUpDto) {
     try {
-      const user = await this.userService.findOne({
-        where: { email: signUpDto.email },
-      });
-
-      // checks if email already used
-      if (!user) {
-        throw new BadRequestException(APP_ERROR.auth.email_taken);
-      }
-
-      // hashed the password
-
-      return signUpDto;
+      return this.userService.create(signUpDto);
     } catch (e) {
       throw new BadRequestException(e);
     }

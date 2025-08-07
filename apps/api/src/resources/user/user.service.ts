@@ -5,10 +5,11 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { APP_ERROR } from '@repo/core';
 import { User } from 'src/core/entity/user.entity';
 import { SignInDto } from 'src/resources/auth/dto/signin.dto';
+import { SignUpDto } from 'src/resources/auth/dto/signup.dto';
 import { FindOneOptions, Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
@@ -17,11 +18,25 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
-  create(createUserDto: CreateUserDto) {
+  async create(signUpDto: SignUpDto) {
     try {
-      //todo add user
-      // 1. check if user existed
-      const user = new User();
+      // check use existence
+      const user = await this.userRepository.findOne({
+        where: { email: signUpDto.email },
+      });
+
+      // checks if email already used
+      if (!user) {
+        throw new BadRequestException(APP_ERROR.auth.email_taken);
+      }
+
+      // insert new user in the database
+      const newUser = await this.userRepository.insert(signUpDto);
+
+      return {
+        success: true,
+        id: newUser.identifiers,
+      };
     } catch (e) {
       throw new BadRequestException(e);
     }
