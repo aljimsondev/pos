@@ -1,0 +1,21 @@
+{
+  "name": "@repo/types",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "start:dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@repo/schema": "*",
+    "redis": "^4.7.1",
+    "typescript": "^5.7.3"
+  }
+}

@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ApiResponse, APP_ERROR, AuthError } from '@repo/core';
+import { APP_ERROR, AuthError } from '@repo/core';
+import { ApiResponse } from '@repo/types';
 import { SignInDto } from 'src/resources/auth/dto/signin.dto';
 import { SignUpDto } from 'src/resources/auth/dto/signup.dto';
 import { UserService } from 'src/resources/user/user.service';

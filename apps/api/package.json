@@ -30,6 +30,7 @@
     "@nestjs/typeorm": "^11.0.0",
     "@repo/core": "^1.0.0",
     "@repo/schema": "^1.0.0",
+    "@repo/types": "^1.0.0",
     "@scalar/nestjs-api-reference": "^0.3.184",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
