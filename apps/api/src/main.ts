@@ -11,6 +11,7 @@ import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { ApiResponseInterceptor } from 'src/core/interceptors/api-response.interceptor';
 import { AppModule } from './app.module';
 
 const API_PREFIX = 'api';
@@ -50,6 +51,8 @@ function filterDocumentByTag(
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // Global response interceptor
+  app.useGlobalInterceptors(new ApiResponseInterceptor());
 
   app.useGlobalPipes(
     new ValidationPipe({

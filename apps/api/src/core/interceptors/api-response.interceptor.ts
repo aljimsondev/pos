@@ -7,10 +7,10 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
+import { BusinessError } from '@repo/core';
 import { ApiResponse } from '@repo/schema';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { BusinessError } from '../errors/business.error'; // You can create this
 
 @Injectable()
 export class ApiResponseInterceptor<T>
