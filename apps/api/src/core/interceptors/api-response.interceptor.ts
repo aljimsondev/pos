@@ -3,6 +3,7 @@ import {
   CallHandler,
   ExecutionContext,
   Injectable,
+  Logger,
   NestInterceptor,
 } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
@@ -18,6 +19,7 @@ export class ApiResponseInterceptor implements NestInterceptor {
         data,
       })),
       catchError((err) => {
+        Logger.debug(err);
         // If error is already formatted, pass it through
         if (err.response?.success === false) {
           return throwError(() => err);
