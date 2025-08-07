@@ -37,15 +37,8 @@ export class UserService {
       newUser.password = signUpDto.password;
       newUser.role = signUpDto.role;
       newUser.email = signUpDto.email;
-
       // save user
-      const result = await this.userRepository.save(newUser);
-
-      return {
-        success: true,
-        id: result.id,
-        created_at: result.created_at,
-      };
+      return this.userRepository.save(newUser);
     } catch (e) {
       throw new BadRequestException(e);
     }

@@ -18,7 +18,15 @@ export class AuthService {
 
   async signUp(signUpDto: SignUpDto) {
     try {
-      return this.userService.create(signUpDto);
+      const user = await this.userService.create(signUpDto);
+
+      return {
+        success: true,
+        payload: {
+          id: user.id,
+          created_at: user.created_at,
+        },
+      };
     } catch (e) {
       throw new BadRequestException(e);
     }
