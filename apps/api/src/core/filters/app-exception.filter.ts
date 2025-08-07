@@ -7,6 +7,7 @@ export class AppExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
+    const name = exception.name || 'AppError';
 
     // Use the formatted response if it exists
     if (exception.response?.success === false) {
@@ -14,6 +15,7 @@ export class AppExceptionFilter implements ExceptionFilter {
         ...exception.response,
         error: {
           ...exception.response.error,
+          name,
           path: request.url,
           timestamp: new Date().toISOString(),
         },
@@ -30,6 +32,7 @@ export class AppExceptionFilter implements ExceptionFilter {
       success: false,
       status,
       error: {
+        name,
         message,
         code,
         path: request.url,
