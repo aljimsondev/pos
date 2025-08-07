@@ -30,13 +30,15 @@ export class UserService {
         throw new BadRequestException(APP_ERROR.auth.email_taken);
       }
 
-      // save user
+      // create new user
       const newUser = new User();
       newUser.first_name = signUpDto.first_name;
       newUser.last_name = signUpDto.last_name;
       newUser.password = signUpDto.password;
       newUser.role = signUpDto.role;
       newUser.email = signUpDto.email;
+
+      // save user
       const result = await this.userRepository.save(newUser);
 
       return {
