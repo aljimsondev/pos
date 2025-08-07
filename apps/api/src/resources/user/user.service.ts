@@ -31,7 +31,7 @@ export class UserService {
       }
 
       // insert new user in the database
-      const newUser = await this.userRepository.insert(signUpDto);
+      const newUser = await this.userRepository.insert({});
 
       return {
         success: true,

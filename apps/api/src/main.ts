@@ -5,12 +5,7 @@ import {
   VersioningType,
 } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import {
-  DocumentBuilder,
-  OpenAPIObject,
-  SwaggerCustomOptions,
-  SwaggerModule,
-} from '@nestjs/swagger';
+import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
@@ -91,7 +86,7 @@ async function bootstrap() {
 
   //OpenAPI Documentation
   const config = new DocumentBuilder()
-    .setTitle('S-Tix Documentation')
+    .setTitle('POS API Documentation')
     .addApiKey(
       {
         type: 'apiKey',
@@ -136,24 +131,7 @@ async function bootstrap() {
 
   const documentFactory = () => SwaggerModule.createDocument(app, config, {});
 
-  //create filtered document
-  const externalDocument = filterDocumentByTag(documentFactory(), 'external');
   const internalDocument = filterDocumentByTag(documentFactory(), null);
-
-  const externalOptions: SwaggerCustomOptions = {
-    explorer: true,
-
-    swaggerOptions: {
-      tagsSorter: 'alpha',
-      operationsSorter: 'alpha',
-      withCredentials: true,
-      persisAuthorization: true, // persist authentication across refreshes
-    },
-    customSiteTitle: 'API Documentation [Integration]',
-    customCss: `.swagger-ui .topbar { background-color: #0078d7; }`,
-  }; // external integration
-
-  SwaggerModule.setup('ui/i', app, () => externalDocument, externalOptions); // external integration
 
   //Scalar Reference
   app.use(
@@ -162,7 +140,7 @@ async function bootstrap() {
       spec: { content: internalDocument },
       hideModels: true,
       hideDownloadButton: true,
-      metaData: { title: 'S-Tix API [Internal]' },
+      metaData: { title: 'POS API [Internal]' },
     }),
   );
 
