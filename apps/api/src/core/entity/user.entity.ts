@@ -50,9 +50,6 @@ export class User {
   @Column({ length: 100, select: false }) // Never returned in queries by default
   password: string;
 
-  @Column({ type: 'varchar', length: 10, unique: true })
-  employee_id: string; // POS system employee ID
-
   @Column({ type: 'boolean', default: true })
   is_active: boolean; // For soft-delete
 
