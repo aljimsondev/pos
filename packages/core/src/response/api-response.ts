@@ -6,5 +6,8 @@ export interface ApiResponse<T> {
     message: string;
     code?: string;
     details?: any;
+    timestamp:string;
+    path?:string;
+    name?:string;
   };
 }
