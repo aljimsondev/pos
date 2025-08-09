@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_PIPE } from '@nestjs/core';
-import { AuthModule } from '@thallesp/nestjs-better-auth';
+import { APP_GUARD, APP_PIPE } from '@nestjs/core';
+import { AuthGuard, AuthModule } from '@thallesp/nestjs-better-auth';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { auth } from 'src/core/auth/auth';
 import { DatabaseModule } from 'src/core/modules/db';
@@ -29,6 +29,10 @@ import { UserModule } from './resources/user/user.module';
     {
       provide: APP_PIPE,
       useClass: ZodValidationPipe,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
     },
     RedisService,
   ],
