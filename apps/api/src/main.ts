@@ -21,7 +21,10 @@ const VERSION_PREFIX = 'v';
 const PORT = process.env.PORT ?? 4001;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bodyParser: false, // disable bodyParser required for better-auth
+  });
+
   // Global response interceptor
   app.useGlobalInterceptors(new ApiResponseInterceptor());
 
