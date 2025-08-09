@@ -11,8 +11,6 @@ import { Product } from 'src/core/entity/product.entity';
 import { Sale } from 'src/core/entity/sale.entity';
 import { Variation } from 'src/core/entity/variation.entity';
 import { RedisModule, RedisService } from 'src/core/modules/redis';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { User } from './core/entity/user.entity';
 import { AuthModule } from './resources/auth/auth.module';
 import { ProductModule } from './resources/product/product.module';
@@ -51,9 +49,8 @@ import { UserModule } from './resources/user/user.module';
     ProductModule,
     AuthModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
-    AppService,
     {
       provide: APP_PIPE,
       useClass: ZodValidationPipe,
