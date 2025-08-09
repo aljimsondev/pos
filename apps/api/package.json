@@ -31,7 +31,7 @@
     "@repo/core": "^1.0.0",
     "@repo/schema": "^1.0.0",
     "@repo/types": "^1.0.0",
-    "@scalar/nestjs-api-reference": "^0.3.184",
+    "@scalar/nestjs-api-reference": "^0.5.12",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
     "class-transformer": "^0.5.1",
