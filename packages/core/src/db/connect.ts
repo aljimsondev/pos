@@ -13,6 +13,8 @@ export const connect = (config: PoolConfig, options: DrizzleConfig) => {
     } else {
       console.warn('❌ Database connection failed!');
     }
+
+    return connection;
   } catch (e) {
     throw new Error('Error initializing database connection!' + e);
   }
