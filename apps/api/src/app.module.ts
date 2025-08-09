@@ -10,6 +10,7 @@ import { Photo } from 'src/core/entity/photo.entity';
 import { Product } from 'src/core/entity/product.entity';
 import { Sale } from 'src/core/entity/sale.entity';
 import { Variation } from 'src/core/entity/variation.entity';
+import { DatabaseModule } from 'src/core/modules/db';
 import { RedisModule, RedisService } from 'src/core/modules/redis';
 import { User } from './core/entity/user.entity';
 import { AuthModule } from './resources/auth/auth.module';
@@ -19,6 +20,7 @@ import { UserModule } from './resources/user/user.module';
 @Module({
   imports: [
     // Load ConfigModule which assists with environment variables
+    DatabaseModule,
     ConfigModule.forRoot({ envFilePath: '.env' }),
     RedisModule.forRoot({
       socket: {
