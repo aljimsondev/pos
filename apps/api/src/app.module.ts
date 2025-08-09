@@ -1,18 +1,21 @@
+import { AuthGuard, AuthModule } from '@mguay/nestjs-better-auth';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
-import { AuthGuard, AuthModule } from '@thallesp/nestjs-better-auth';
+import { DATABASE_CONNECTION } from '@repo/core';
+import { betterAuth } from 'better-auth';
+import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { ZodValidationPipe } from 'nestjs-zod';
-import { auth } from 'src/core/auth/auth';
 import { DatabaseModule } from 'src/core/modules/db';
 import { RedisModule, RedisService } from 'src/core/modules/redis';
+import * as schema from './core/auth/schema';
 import { ProductModule } from './resources/product/product.module';
 import { UserModule } from './resources/user/user.module';
 
 @Module({
   imports: [
     // Load ConfigModule which assists with environment variables
-    DatabaseModule,
     ConfigModule.forRoot({ envFilePath: '.env' }),
     RedisModule.forRoot({
       socket: {
@@ -20,7 +23,20 @@ import { UserModule } from './resources/user/user.module';
         port: (process.env.REDIS_PORT || 6379) as number,
       },
     }),
-    AuthModule.forRoot(auth),
+    AuthModule.forRootAsync({
+      useFactory: (db: NodePgDatabase) => {
+        return {
+          auth: betterAuth({
+            database: drizzleAdapter(db, { provider: 'pg', schema }),
+            emailAndPassword: {
+              enabled: true,
+            },
+          }),
+        };
+      },
+      inject: [DATABASE_CONNECTION],
+      imports: [DatabaseModule],
+    }),
     UserModule,
     ProductModule,
   ],

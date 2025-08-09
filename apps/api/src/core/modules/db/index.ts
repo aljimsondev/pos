@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DATABASE_CONNECTION, connect } from '@repo/core';
-import * as authSchema from 'src/core/auth/schema';
 
 @Module({
   imports: [ConfigModule],
@@ -9,12 +8,9 @@ import * as authSchema from 'src/core/auth/schema';
     {
       provide: DATABASE_CONNECTION,
       useFactory: (configService: ConfigService) => {
-        return connect(
-          {
-            connectionString: configService.getOrThrow('DB_CONNECTION_STRING'),
-          },
-          { schema: { ...authSchema } as any },
-        );
+        return connect({
+          connectionString: configService.getOrThrow('DB_CONNECTION_STRING'),
+        });
       },
       inject: [ConfigService], // inject to use service
     },

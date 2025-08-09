@@ -1,12 +1,11 @@
-import { DrizzleConfig } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool, PoolConfig } from 'pg';
 
-export const connect = (config: PoolConfig, options: DrizzleConfig) => {
+export const connect = (config: PoolConfig) => {
   try {
     const pool = new Pool(config);
 
-    const connection = drizzle(pool, options);
+    const connection = drizzle(pool);
 
     if (connection.$client) {
       console.info('✅ Database connection initialized!');

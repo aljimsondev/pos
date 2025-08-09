@@ -1,11 +1,12 @@
+import { Public, Session, type UserSession } from '@mguay/nestjs-better-auth';
 import {
-  BadGatewayException,
   BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   InternalServerErrorException,
+  Logger,
   Param,
   Patch,
   Post,
@@ -13,11 +14,6 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
-import {
-  Public,
-  Session,
-  type UserSession,
-} from '@thallesp/nestjs-better-auth';
 import { type Response } from 'express';
 import { SignInDto } from './dto/signin.dto';
 import { SignUpDto } from './dto/signup.dto';
@@ -180,8 +176,8 @@ export class UserController {
       // 5. return body parsed body
       return body;
     } catch (e) {
-      console.log(e);
-      throw new BadGatewayException(e);
+      Logger.error(e);
+      throw new InternalServerErrorException(e);
     }
   }
   @Post('sign-out')
