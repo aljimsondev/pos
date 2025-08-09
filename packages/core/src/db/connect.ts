@@ -17,3 +17,5 @@ export const connect = (config: PoolConfig, options: DrizzleConfig) => {
     throw new Error('Error initializing database connection!' + e);
   }
 };
+
+export const DATABASE_CONNECTION = 'DATABASE_CONNECTION';
